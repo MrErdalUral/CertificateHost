@@ -64,7 +64,7 @@ app.post('/upload', (req, res) => {
             return res.status(500).send(err);
         } else {
             const url = `/Certificates/${req.body.name}.pdf`;
-            res.send(url)
+            res.send({ success: 1, result: url })
         }
     });
     // file.mv(`${__dirname}/Certificates/${file.name}`, function (err) {
