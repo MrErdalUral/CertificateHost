@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/Certificates', (req, res) => {
-    fs.readdir('./Certificates', (err, files) => {
+    fs.readdir('./certificates', (err, files) => {
         if (err) {
             res.send(err);
         } else {
