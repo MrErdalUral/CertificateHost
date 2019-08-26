@@ -63,7 +63,7 @@ app.post('/upload', (req, res) => {
         if (err) {
             return res.status(500).send(err);
         } else {
-            const url = `http://localhost:3000/Certificates/${req.body.name}.pdf`;
+            const url = `/Certificates/${req.body.name}.pdf`;
             res.send(url)
         }
     });
