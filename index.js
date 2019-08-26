@@ -55,7 +55,7 @@ app.post('/upload', (req, res) => {
     // console.log(req.body.folder);
 
     let file = req.body.file;
-    const pathToDir = `${__dirname}/Certificates/${req.body.folder}`;
+    const pathToDir = `${__dirname}/certificates/${req.body.folder}`;
     if (!fs.existsSync(pathToDir)) {
         fs.mkdirSync(pathToDir);
     }
