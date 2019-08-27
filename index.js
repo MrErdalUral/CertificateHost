@@ -50,9 +50,6 @@ app.get('/Certificates/:dir/:name', (req, res) => {
 app.post('/upload', (req, res) => {
 
     console.log(req.body.name);
-    // console.log(req.body.files);
-    // console.log(req.body.name);
-    // console.log(req.body.folder);
 
     let file = req.body.file;
     const pathToDir = `${__dirname}/certificates/${req.body.folder}`;
