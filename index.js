@@ -63,7 +63,7 @@ app.post('/upload', (req, res) => {
         if (err) {
             return res.status(500).send(err);
         } else {
-            const url = `/Certificates/${pathToDir}/${req.body.name}`;
+            const url = `/certificates/${req.body.folder}/${req.body.name}`;
             res.send({ success: 1, result: url })
         }
     });
