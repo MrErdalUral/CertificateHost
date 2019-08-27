@@ -10,28 +10,28 @@ app.use(express.json({ limit: '50mb' }));
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
-app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/index.html`);
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(`${__dirname}/index.html`);
+// });
 
-app.get('/Certificates', (req, res) => {
-    fs.readdir('./certificates', (err, files) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(files);
-        }
-    })
-});
-app.get('/Certificates/:dir', (req, res) => {
-    fs.readdir(`./certificates/${req.params.dir}`, (err, files) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(files);
-        }
-    })
-});
+// app.get('/Certificates', (req, res) => {
+//     fs.readdir('./certificates', (err, files) => {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.send(files);
+//         }
+//     })
+// });
+// app.get('/Certificates/:dir', (req, res) => {
+//     fs.readdir(`./certificates/${req.params.dir}`, (err, files) => {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.send(files);
+//         }
+//     })
+// });
 
 app.get('/Certificates/:dir/:name', (req, res) => {
     fs.readFile(`./certificates/${req.params.dir}/${req.params.name}`, (err, file) => {
@@ -63,22 +63,10 @@ app.post('/upload', (req, res) => {
         if (err) {
             return res.status(500).send(err);
         } else {
-            const url = `/Certificates/${req.body.name}.pdf`;
+            const url = `/Certificates/${pathToDir}/${req.body.name}`;
             res.send({ success: 1, result: url })
         }
     });
-    // file.mv(`${__dirname}/Certificates/${file.name}`, function (err) {
-    //     if (err)
-    //         return res.status(500).send(err);
-
-    //     fs.readdir('./Certificates', (err, files) => {
-    //         if (err) {
-    //             res.send(err);
-    //         } else {
-    //             res.send(files);
-    //         }
-    //     });
-    // });
 });
 
 const port = process.env.PORT || 3000;
