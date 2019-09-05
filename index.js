@@ -34,19 +34,7 @@ app.get('/', (req, res) => {
 //     })
 // });
 
-app.get('/Certificates/:dir/:name', (req, res) => {
-    fs.readFile(`./certificates/${req.params.dir}/${req.params.name}`, (err, file) => {
-        if (err) {
-            if (err.errno === -4058) {
-                res.status(404).send(`${req.params.name} kodlu sertifika bulunamadı!`);
-            } else {
-                res.send(err);
-            }
-        } else {
-            res.send(file);
-        }
-    });
-});
+
 
 app.post('/upload', (req, res) => {
 
@@ -67,7 +55,7 @@ app.post('/upload', (req, res) => {
     });
 });
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 https.createServer({
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
