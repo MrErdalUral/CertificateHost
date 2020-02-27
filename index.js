@@ -39,18 +39,38 @@ app.get('/', (req, res) => {
 app.post('/upload', (req, res) => {
 
     console.log(req.body.name);
-
+    console.log(req.body.CustomerDevice.Name)
+    console.log(req.body.CustomerDevice.Brand)
+    console.log(req.body.CustomerDevice.Type)
+    console.log(req.body.CustomerDevice.SerialNumber)
+    console.log(req.body.CustomerDevice.SimkalNumber)
+    console.log(req.body.CustomerDevice.InventoryNumber)
+    console.log(req.body.Certificate.CertificateNumber)
     let file = req.body.file;
-    const pathToDir = `${__dirname}/certificates/${req.body.folder}`;
+    let pathToDir = `${__dirname}/certificates/${req.body.folder}`;
+    
     if (!fs.existsSync(pathToDir)) {
         fs.mkdirSync(pathToDir);
     }
-    fs.writeFile(`${pathToDir}/${req.body.name}`, Buffer.from(file, "base64"), { encoding: 'binary' }, function (err) {
+    pathToDir = `${__dirname}/certificates/${req.body.folder}/${req.body.name}`;
+    if (!fs.existsSync(pathToDir)) {
+        fs.mkdirSync(pathToDir);
+    }
+    let fileName = `${pathToDir}/${req.body.Certificate.CertificateNumber}.pdf`;
+    fs.writeFile(fileName, Buffer.from(file, "base64"), { encoding: 'binary' }, function (err) {
         if (err) {
             return res.status(500).send(err);
         } else {
-            const url = `/certificates/${req.body.folder}/${req.body.name}`;
-            res.send({ success: 1, result: url })
+            let htmlstring = `<!DOCTYPE html><html><head><title>TEST HTML</title></head><body><div><a href='/certificates/${fileName}</a></div></body>`
+            fs.writeFile(`${pathToDir}/Index.html`, htmlstring, function (err) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                    const url = `/certificates/${req.body.folder}/${req.body.name}/Index.html`;
+                    res.send({ success: 1, result: url });
+                }
+            });
+            
         }
     });
 });
