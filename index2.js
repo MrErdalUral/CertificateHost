@@ -36,17 +36,16 @@ app.get('/Certificates/:dir', (req, res) => {
     })
 });
 
-
 app.get('/Certificates/:dir/:name', (req, res) => {
     fs.readFile(`./certificates/${req.params.dir}/${req.params.name}`, (err, file) => {
         if (err) {
             if (err.errno === -4058) {
-                res.status(404).send(`${req.params.name} kodlu sertifika bulunamadı!`);
+                res.status(404).send(`${req.params.name} kodlu dosya bulunamadı!`);
             } else {
                 res.send(err);
             }
         } else {
-            res.send(file);
+            res.sendFile(`${__dirname}/certificates/${req.params.dir}/${req.params.name}`);
         }
     });
 });

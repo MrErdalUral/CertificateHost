@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
 <head>
 	<title>TEST HTML</title>
 </head>
 
-<body>
-	<div>Hello World!</div>
+<body ng-app="myApp">
+	<div ng-controller="myController">
+		<h1><a target='_blank' href='{{pageData.CertificateNumber}}.pdf'>{{pageData.CustomerName}} -
+				{{pageData.SimkalNumber}} - {{pageData.CertificateNumber}}</a></h1>
+		<h2>{{pageData.DeviceName}} - {{pageData.DeviceType}} - {{pageData.DeviceBrand}}</h2>
+		<h3>{{pageData.DeviceSerialNumber}} - {{pageData.DeviceInventoryNumber}}</h3>
+		<h3>Kalibrasyonu Yapan: {{pageData.Person}}</h3>
+		<h3>Sertifikanın Tamamlanma Tarihi: {{pageData.CompletionTime}}</h3>
+		<h3>Sertifikayı Onaylayan: {{pageData.ApprovalPerson}}</h3>
+		<h3>Onaylanma Tarihi: {{pageData.ApprovalTime}}</h3>
+		<h3 style="border: 3pt solid;color: green">Eski Sertifikalar</h3>
+		<h3 ng-repeat="cert in pageData.OldCertificateList"><a target='_blank' href='{{cert.DownloadLink}}'>{{cert.CertificateNumber}}</a></h3>
+	</div>
+ 
+
 </body>
+<script>
+	(function (angular) {
+		var app = angular.module("myApp", []);
+		app.controller("myController", function ($http, $scope) {
+			$scope.pageData = {};
+			$scope.getDeviceData = function () {
+				$http.get("deviceData.json").then(function (response) {
+					$scope.pageData = response.data;
+					return $scope.pageData;
+				}, function (error) {
+					console.log(error);
+					return error;
+				})
+			}
+			$scope.getDeviceData();
+		});
+
+
+	})(angular);
+
+</script>

@@ -35,48 +35,57 @@ app.get('/', (req, res) => {
 // });
 
 
-
 app.post('/upload', (req, res) => {
 
-    console.log(req.body.name);
-    console.log(req.body.CustomerDevice.Name)
-    console.log(req.body.CustomerDevice.Brand)
-    console.log(req.body.CustomerDevice.Type)
-    console.log(req.body.CustomerDevice.SerialNumber)
-    console.log(req.body.CustomerDevice.SimkalNumber)
-    console.log(req.body.CustomerDevice.InventoryNumber)
-    console.log(req.body.Certificate.CertificateNumber)
     let file = req.body.file;
     let pathToDir = `${__dirname}/certificates/${req.body.folder}`;
-    
-    if (!fs.existsSync(pathToDir)) {
-        fs.mkdirSync(pathToDir);
-    }
-    pathToDir = `${__dirname}/certificates/${req.body.folder}/${req.body.name}`;
+    console.log(req.body.CertificateNumber);
     if (!fs.existsSync(pathToDir)) {
         fs.mkdirSync(pathToDir);
     }
     let fileName = `${pathToDir}/${req.body.Certificate.CertificateNumber}.pdf`;
-    fs.writeFile(fileName, Buffer.from(file, "base64"), { encoding: 'binary' }, function (err) {
+
+    let jsonContent = JSON.stringify(req.body.Certificate);
+    fs.writeFile(`${pathToDir}/deviceData.json`, jsonContent, 'utf8', function (err) {
         if (err) {
+            console.log("An error occured while writing JSON Object to File.");
             return res.status(500).send(err);
         } else {
-            let htmlstring = `<!DOCTYPE html><html><head><title>TEST HTML</title></head><body><div><a href='/certificates/${fileName}</a></div></body>`
-            fs.writeFile(`${pathToDir}/Index.html`, htmlstring, function (err) {
+            console.log("JSON file has been saved.");
+            fs.writeFile(fileName, Buffer.from(file, "base64"), { encoding: 'binary' }, function (err) {
                 if (err) {
+                    console.log("An error occured while writing Pdf file.");
                     return res.status(500).send(err);
-                } else {
-                    const url = `/certificates/${req.body.folder}/${req.body.name}/Index.html`;
-                    res.send({ success: 1, result: url });
+                } else{
+                    let htmlPath = `${pathToDir}/Index.html`;
+                    if (fs.existsSync(htmlPath)) {
+                        fs.unlinkSync(htmlPath);
+                    }
+                    fs.copyFile(`${__dirname}/index.html`, `${pathToDir}/Index.html`, (err) => {
+                        if (err) {
+                            return res.status(500).send(err);
+                        } else {
+                            const url = `/certificates/${req.body.folder}/Index.html`;
+                            res.send({ success: 1, result: url });
+                        }
+                    });
                 }
             });
-            
         }
     });
+
+    
+
+    //let htmlstring = `<!DOCTYPE html><html><head><title>TEST HTML</title></head><body><div><a target='_blank' href='/certificates/${req.body.folder}/${req.body.name}/${req.body.Certificate.CertificateNumber}.pdf'>${req.body.Certificate.CertificateNumber}</a></div></body>`
+   
+
+
+
 });
+
 
 const port = 3000;
 https.createServer({
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
-  }, app).listen(port, () => { console.log(`Listening on port ${port}...`) });
+}, app).listen(port, () => { console.log(`Listening on port ${port}...`) });
