@@ -50,9 +50,23 @@ app.get('/Certificates/:dir/:name', (req, res) => {
     });
 });
 
+app.get('/.well-known/pki-validation/:name', (req, res) => {
+    fs.readFile(`./.well-known/pki-validation/${req.params.name}`, (err, file) => {
+        if (err) {
+            if (err.errno === -4058) {
+                res.status(404).send(`${req.params.name} kodlu dosya bulunamadı!`);
+            } else {
+                res.send(err);
+            }
+        } else {
+            res.sendFile(`${__dirname}/.well-known/pki-validation/${req.params.name}`);
+        }
+    });
+});
+
 
 const port = 443;
 https.createServer({
     key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
+    cert: fs.readFileSync('server.crt')
   }, app).listen(port, () => { console.log(`Listening on port ${port}...`) });

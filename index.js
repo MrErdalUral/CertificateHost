@@ -87,5 +87,5 @@ app.post('/upload', (req, res) => {
 const port = 3000;
 https.createServer({
     key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
+    cert: fs.readFileSync('server.crt')
 }, app).listen(port, () => { console.log(`Listening on port ${port}...`) });
