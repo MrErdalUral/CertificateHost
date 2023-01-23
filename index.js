@@ -65,7 +65,7 @@ app.post('/upload', (req, res) => {
                         if (err) {
                             return res.status(500).send(err);
                         } else {
-                            const url = `/certificates/${req.body.folder}/Index.html`;
+                            const url = `/certificates/${req.body.folder}/${req.body.Certificate.CertificateNumber}.pdf`;
                             res.send({ success: 1, result: url });
                         }
                     });

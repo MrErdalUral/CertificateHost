@@ -15,7 +15,7 @@
 		<h3>Seri No:{{pageData.DeviceSerialNumber}} - Envanter No:{{pageData.DeviceInventoryNumber}}</h3>
 		<h3>Kalibrasyonu Yapan: {{pageData.Person}}</h3>
 		<h3>Sertifikayı Onaylayan: {{pageData.ApprovalPerson}}</h3>
-		<h3 style="border: 3pt solid;color: green">Eski Sertifikalar</h3>
+		<h3 style="border: 3pt solid;color: green">Cihaza Ait Geçmiş E-Sertifikalar</h3>
 		<h3 ng-repeat="cert in pageData.OldCertificateList"><a target='_blank' href='{{cert.DownloadLink}}'>{{cert.CertificateNumber}}</a></h3>
 	</div>
  

@@ -2,7 +2,7 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<head ng-app="myApp">
+<head>
 	<title>e-sertifika sayfası</title>
 </head>
 
@@ -15,7 +15,7 @@
 		<h3>Seri No:{{pageData.DeviceSerialNumber}} - Envanter No:{{pageData.DeviceInventoryNumber}}</h3>
 		<h3>Kalibrasyonu Yapan: {{pageData.Person}}</h3>
 		<h3>Sertifikayı Onaylayan: {{pageData.ApprovalPerson}}</h3>
-		<h3 style="border: 3pt solid;color: green">Eski Sertifikalar</h3>
+		<h3 style="border: 3pt solid;color: green">Geçmiş E-Sertifikalar</h3>
 		<h3 ng-repeat="cert in pageData.OldCertificateList"><a target='_blank' href='{{cert.DownloadLink}}'>{{cert.CertificateNumber}}</a></h3>
 	</div>
  
